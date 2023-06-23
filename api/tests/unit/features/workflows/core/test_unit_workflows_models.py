@@ -429,24 +429,14 @@ def test_change_request_url(change_request_no_required_approvals, settings):
     # Then
     assert (
         change_request_no_required_approvals.url
-        == "https://%s/project/%s/environment/%s/change-requests/%s"
-        % (
-            site.domain,
-            project_id,
-            environment_key,
-            change_request_no_required_approvals.id,
-        )
+        == f"https://{site.domain}/project/{project_id}/environment/{environment_key}/change-requests/{change_request_no_required_approvals.id}"
     )
 
 
 def test_change_request_email_subject(change_request_no_required_approvals):
     assert (
         change_request_no_required_approvals.email_subject
-        == "Flagsmith Change Request: %s (#%s)"
-        % (
-            change_request_no_required_approvals.title,
-            change_request_no_required_approvals.id,
-        )
+        == f"Flagsmith Change Request: {change_request_no_required_approvals.title} (#{change_request_no_required_approvals.id})"
     )
 
 

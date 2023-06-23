@@ -46,7 +46,7 @@ class TraitViewSet(viewsets.ModelViewSet):
         identity = Identity.objects.select_related("environment").get(
             pk=self.kwargs["identity_pk"]
         )
-        if not identity.environment.api_key == self.kwargs["environment_api_key"]:
+        if identity.environment.api_key != self.kwargs["environment_api_key"]:
             raise Identity.DoesNotExist()
 
         request.identity = identity
@@ -95,15 +95,17 @@ class TraitViewSet(viewsets.ModelViewSet):
         ]
     )
     def destroy(self, request, *args, **kwargs):
-        if request.query_params.get("deleteAllMatchingTraits") in ("true", "True"):
-            trait = self.get_object()
-            Trait.objects.filter(
-                trait_key=trait.trait_key,
-                identity__environment=trait.identity.environment,
-            ).delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        else:
+        if request.query_params.get("deleteAllMatchingTraits") not in (
+            "true",
+            "True",
+        ):
             return super(TraitViewSet, self).destroy(request, *args, **kwargs)
+        trait = self.get_object()
+        Trait.objects.filter(
+            trait_key=trait.trait_key,
+            identity__environment=trait.identity.environment,
+        ).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class SDKTraitsDeprecated(SDKAPIView):
@@ -148,7 +150,7 @@ class SDKTraitsDeprecated(SDKAPIView):
                 {"detail": "Missing trait key"}, status=status.HTTP_400_BAD_REQUEST
             )
 
-        if trait and "trait_value" in trait_data:
+        if trait:
             # Check if trait value was provided with request data. If so, we need to figure out value_type from
             # the given value and also use correct value field e.g. boolean_value, float_value, integer_value or
             # string_value, and override request data
@@ -275,7 +277,7 @@ class SDKTraits(mixins.CreateModelMixin, viewsets.GenericViewSet):
             return Response(serializer.data, status=200)
 
         except (TypeError, AttributeError) as excinfo:
-            logger.error("Invalid request data: %s" % str(excinfo))
+            logger.error(f"Invalid request data: {str(excinfo)}")
             return Response(
                 {"detail": "Invalid request data"}, status=status.HTTP_400_BAD_REQUEST
             )

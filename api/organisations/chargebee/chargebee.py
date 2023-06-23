@@ -106,7 +106,7 @@ def get_hosted_page_url_for_subscription_upgrade(
 def get_subscription_metadata(
     subscription_id: str,
 ) -> typing.Optional[ChargebeeObjMetadata]:
-    if not (subscription_id and subscription_id.strip() != ""):
+    if not subscription_id or not subscription_id.strip():
         logger.warning("Subscription id is empty or None")
         return None
 
@@ -132,7 +132,7 @@ def cancel_subscription(subscription_id: str):
     try:
         chargebee.Subscription.cancel(subscription_id, {"end_of_term": True})
     except ChargebeeAPIError as e:
-        msg = "Cannot cancel CB subscription for subscription id: %s" % subscription_id
+        msg = f"Cannot cancel CB subscription for subscription id: {subscription_id}"
         logger.error(msg)
         raise CannotCancelChargebeeSubscription(msg) from e
 
@@ -163,9 +163,6 @@ def add_single_seat(subscription_id: str):
         )
 
     except ChargebeeAPIError as e:
-        msg = (
-            "Failed to add additional seat to CB subscription for subscription id: %s"
-            % subscription_id
-        )
+        msg = f"Failed to add additional seat to CB subscription for subscription id: {subscription_id}"
         logger.error(msg)
         raise UpgradeSeatsError(msg) from e

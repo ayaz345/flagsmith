@@ -22,7 +22,7 @@ class NewRelicWrapper(AbstractBaseEventIntegrationWrapper):
             self.url, headers=self._headers(), data=json.dumps(event)
         )
         logger.debug(
-            "Sent event to NewRelic. Response code was %s" % response.status_code
+            f"Sent event to NewRelic. Response code was {response.status_code}"
         )
 
     def _headers(self) -> dict:

@@ -13,11 +13,12 @@ class Resource(models.IntegerChoices):
 
     @classmethod
     def get_lowercased_name(cls, resource: int) -> str:
-        member = next(filter(lambda member: member.value == resource, cls), None)
-        if not member:
+        if member := next(
+            filter(lambda member: member.value == resource, cls), None
+        ):
+            return member.name.lower()
+        else:
             raise ValueError("Invalid resource: {resource}")
-
-        return member.name.lower()
 
     @classmethod
     def get_from_resource_name(cls, resource: str) -> int:

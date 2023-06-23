@@ -10,8 +10,7 @@ def get_current_site_url():
     else:
         domain = settings.DEFAULT_DOMAIN
 
-    url = "https://" + domain
-    return url
+    return f"https://{domain}"
 
 
 def get_ip_address_from_request(request):

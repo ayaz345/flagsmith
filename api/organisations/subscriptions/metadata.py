@@ -26,7 +26,7 @@ class BaseSubscriptionMetadata:
             projects = self.projects + other.projects
         elif self.projects is None and other.projects is not None:
             projects = other.projects
-        elif other.projects is None and self.projects is not None:
+        elif self.projects is not None:
             projects = self.projects
         else:
             projects = None

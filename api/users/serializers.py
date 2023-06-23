@@ -80,7 +80,7 @@ class UserIdsSerializer(serializers.Serializer):
     user_ids = serializers.ListField(child=serializers.IntegerField())
 
     def validate(self, data):
-        if not FFAdminUser.objects.filter(id__in=data["user_ids"]).count() == len(
+        if FFAdminUser.objects.filter(id__in=data["user_ids"]).count() != len(
             data["user_ids"]
         ):
             raise serializers.ValidationError("Some users not found")

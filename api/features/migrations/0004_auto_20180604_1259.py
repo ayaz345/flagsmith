@@ -11,12 +11,10 @@ def delete_existing_non_unique_features(apps, schema_editor):
         clashing_features = feature_model.objects.filter(name__iexact=feature.name,
                                                          project=feature.project)
         if clashing_features.count() > 1:
-            i = 0
-            for clashing_feature in clashing_features:
-                suffix = "_" + str(i)
+            for i, clashing_feature in enumerate(clashing_features):
+                suffix = f"_{str(i)}"
                 clashing_feature.name = clashing_feature.name + suffix if i > 0 else clashing_feature.name
                 clashing_feature.save()
-                i += 1
 
 
 def reverse_migration(apps, schema_editor):
@@ -31,10 +29,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(delete_existing_non_unique_features,
-                             reverse_migration),
+        migrations.RunPython(
+            delete_existing_non_unique_features, reverse_migration
+        ),
         migrations.AlterUniqueTogether(
-            name='feature',
-            unique_together=set([('name', 'project')]),
+            name='feature', unique_together={('name', 'project')}
         ),
     ]

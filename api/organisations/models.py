@@ -82,11 +82,11 @@ class Organisation(LifecycleModelMixin, SoftDeleteExportableModel):
         ordering = ["id"]
 
     def __str__(self):
-        return "Org %s (#%s)" % (self.name, self.id)
+        return f"Org {self.name} (#{self.id})"
 
     # noinspection PyTypeChecker
     def get_unique_slug(self):
-        return str(self.id) + "-" + self.name
+        return f"{str(self.id)}-{self.name}"
 
     @property
     def num_seats(self):

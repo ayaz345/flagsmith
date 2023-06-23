@@ -21,7 +21,7 @@ env_id = 1234
 feature_id = 12345
 feature_name = "test_feature"
 influx_org = settings.INFLUXDB_ORG
-read_bucket = settings.INFLUXDB_BUCKET + "_downsampled_15m"
+read_bucket = f"{settings.INFLUXDB_BUCKET}_downsampled_15m"
 
 
 def test_write(monkeypatch):

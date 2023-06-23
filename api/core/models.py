@@ -97,12 +97,13 @@ class _AbstractBaseAuditableModel(models.Model):
         self,
     ) -> typing.Tuple[typing.Optional["Environment"], typing.Optional["Project"]]:
         environment, project = self._get_environment(), self._get_project()
-        if not (environment or project):
+        if environment or project:
+            return environment, project
+        else:
             raise RuntimeError(
                 "One of _get_environment() or _get_project() must "
                 "be implemented and return a non-null value"
             )
-        return environment, project
 
     def get_extra_audit_log_kwargs(self, history_instance) -> dict:
         """Add extra kwargs to the creation of the AuditLog record"""

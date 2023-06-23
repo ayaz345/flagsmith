@@ -25,14 +25,14 @@ def register_task_handler(task_name: str = None):
         register_task(task_identifier, f)
 
         def delay(
-            *,
-            delay_until: datetime = None,
-            args: typing.Tuple = (),
-            kwargs: typing.Dict = None,
-        ) -> typing.Optional[Task]:
+                    *,
+                    delay_until: datetime = None,
+                    args: typing.Tuple = (),
+                    kwargs: typing.Dict = None,
+                ) -> typing.Optional[Task]:
             logger.debug("Request to run task '%s' asynchronously.", task_identifier)
 
-            kwargs = kwargs or dict()
+            kwargs = kwargs or {}
 
             if delay_until and settings.TASK_RUN_METHOD != TaskRunMethod.TASK_PROCESSOR:
                 logger.warning(
@@ -92,8 +92,12 @@ def register_recurring_task(
             task_identifier=task_identifier,
             run_every=run_every,
             defaults={
-                "serialized_args": RecurringTask.serialize_data(args or tuple()),
-                "serialized_kwargs": RecurringTask.serialize_data(kwargs or dict()),
+                "serialized_args": RecurringTask.serialize_data(
+                    args or tuple()
+                ),
+                "serialized_kwargs": RecurringTask.serialize_data(
+                    kwargs or {}
+                ),
             },
         )
         return task

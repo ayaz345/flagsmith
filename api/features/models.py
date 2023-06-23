@@ -191,7 +191,7 @@ class Feature(
             )
 
     def __str__(self):
-        return "Project %s - Feature %s" % (self.project.name, self.name)
+        return f"Project {self.project.name} - Feature {self.name}"
 
     def get_create_log_message(self, history_instance) -> typing.Optional[str]:
         return FEATURE_CREATED_MESSAGE % self.name

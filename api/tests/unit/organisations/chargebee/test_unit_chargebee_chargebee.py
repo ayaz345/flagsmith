@@ -316,8 +316,6 @@ def test_cancel_subscription_throws_cannot_cancel_error_if_api_error(mocker, cap
     mocked_chargebee = mocker.patch("organisations.chargebee.chargebee.chargebee")
     subscription_id = "sub-id"
 
-    # Chargebee's APIError requires additional arguments to instantiate it so instead
-    # we mock it with our own exception here to test that it is caught correctly
     class MockException(Exception):
         pass
 
@@ -337,7 +335,7 @@ def test_cancel_subscription_throws_cannot_cancel_error_if_api_error(mocker, cap
     assert caplog.records[0].levelname == "ERROR"
     assert (
         caplog.records[0].message
-        == "Cannot cancel CB subscription for subscription id: %s" % subscription_id
+        == f"Cannot cancel CB subscription for subscription id: {subscription_id}"
     )
 
 
@@ -449,6 +447,7 @@ def test_add_single_seat_throws_upgrade_seats_error_error_if_api_error(mocker, c
 
     # Chargebee's APIError requires additional arguments to instantiate it so instead
     # we mock it with our own exception here to test that it is caught correctly
+
     class MockException(Exception):
         pass
 
@@ -488,6 +487,5 @@ def test_add_single_seat_throws_upgrade_seats_error_error_if_api_error(mocker, c
     assert caplog.records[0].levelname == "ERROR"
     assert (
         caplog.records[0].message
-        == "Failed to add additional seat to CB subscription for subscription id: %s"
-        % subscription_id
+        == f"Failed to add additional seat to CB subscription for subscription id: {subscription_id}"
     )

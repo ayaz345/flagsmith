@@ -82,7 +82,7 @@ class FeatureSegmentChangePrioritiesListSerializer(serializers.ListSerializer):
             )
         )
 
-        if not len(feature_segments) == len(attrs):
+        if len(feature_segments) != len(attrs):
             raise serializers.ValidationError(
                 "Some of the provided ids were not found."
             )

@@ -26,7 +26,7 @@ class AmplitudeWrapper(AbstractBaseIdentityIntegrationWrapper):
 
         response = requests.post(self.url, data=payload)
         logger.debug(
-            "Sent event to Amplitude. Response code was: %s" % response.status_code
+            f"Sent event to Amplitude. Response code was: {response.status_code}"
         )
 
     def generate_user_data(

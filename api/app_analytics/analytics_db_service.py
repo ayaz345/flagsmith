@@ -75,16 +75,16 @@ def get_total_events_count(organisation) -> int:
     """
     Return total number of events for an organisation in the last 30 days
     """
-    if settings.USE_POSTGRES_FOR_ANALYTICS:
-        count = APIUsageBucket.objects.filter(
+    return (
+        APIUsageBucket.objects.filter(
             environment_id__in=_get_environment_ids_for_org(organisation),
             created_at__date__lte=date.today(),
             created_at__date__gt=date.today() - timedelta(days=30),
             bucket_size=ANALYTICS_READ_BUCKET_SIZE,
         ).aggregate(total_count=Sum("total_count"))["total_count"]
-    else:
-        count = get_events_for_organisation(organisation.id)
-    return count
+        if settings.USE_POSTGRES_FOR_ANALYTICS
+        else get_events_for_organisation(organisation.id)
+    )
 
 
 def get_feature_evaluation_data(
@@ -113,15 +113,13 @@ def get_feature_evaluation_data_from_local_db(
         .values("created_at__date", "feature_name", "environment_id")
         .annotate(count=Sum("total_count"))
     )
-    usage_list = []
-    for data in feature_evaluation_data:
-        usage_list.append(
-            FeatureEvaluationData(
-                day=data["created_at__date"],
-                count=data["count"],
-            )
+    return [
+        FeatureEvaluationData(
+            day=data["created_at__date"],
+            count=data["count"],
         )
-    return usage_list
+        for data in feature_evaluation_data
+    ]
 
 
 def _get_environment_ids_for_org(organisation) -> List[int]:

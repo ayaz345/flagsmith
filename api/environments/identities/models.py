@@ -136,7 +136,6 @@ class Identity(models.Model):
         :param overrides_only: only retrieve the segments which have a valid override in the environment
         :return: List of matching segments
         """
-        matching_segments = []
         traits = self.identity_traits.all() if traits is None else traits
 
         if overrides_only:
@@ -144,18 +143,18 @@ class Identity(models.Model):
         else:
             all_segments = self.environment.project.get_segments_from_cache()
 
-        for segment in all_segments:
-            if segment.does_identity_match(self, traits=traits):
-                matching_segments.append(segment)
-
-        return matching_segments
+        return [
+            segment
+            for segment in all_segments
+            if segment.does_identity_match(self, traits=traits)
+        ]
 
     def get_all_user_traits(self):
         # this is pointless, we should probably replace all uses with the below code
         return self.identity_traits.all()
 
     def __str__(self):
-        return "Account %s" % self.identifier
+        return f"Account {self.identifier}"
 
     def generate_traits(self, trait_data_items, persist=False):
         """

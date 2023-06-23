@@ -43,7 +43,7 @@ def test_environments_are_updated_in_dynamodb_when_project_id_updated(
     mock_environments_wrapper = mocker.patch("environments.models.environment_wrapper")
 
     # When
-    dynamo_enabled_project.name = dynamo_enabled_project.name + " updated"
+    dynamo_enabled_project.name = f"{dynamo_enabled_project.name} updated"
     dynamo_enabled_project.save()
 
     # Then

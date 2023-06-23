@@ -17,12 +17,12 @@ logger = logging.getLogger(__name__)
 url = settings.INFLUXDB_URL
 token = settings.INFLUXDB_TOKEN
 influx_org = settings.INFLUXDB_ORG
-read_bucket = settings.INFLUXDB_BUCKET + "_downsampled_15m"
+read_bucket = f"{settings.INFLUXDB_BUCKET}_downsampled_15m"
 
 range_bucket_mappings = {
-    "24h": settings.INFLUXDB_BUCKET + "_downsampled_15m",
-    "7d": settings.INFLUXDB_BUCKET + "_downsampled_15m",
-    "30d": settings.INFLUXDB_BUCKET + "_downsampled_1h",
+    "24h": f"{settings.INFLUXDB_BUCKET}_downsampled_15m",
+    "7d": f"{settings.INFLUXDB_BUCKET}_downsampled_15m",
+    "30d": f"{settings.INFLUXDB_BUCKET}_downsampled_1h",
 }
 retries = Retry(connect=3, read=3, redirect=3)
 # Set a timeout to prevent threads being potentially stuck open due to network weirdness
@@ -92,8 +92,7 @@ class InfluxDBWrapper:
         logger.debug("Running query in influx: \n\n %s", query)
 
         try:
-            result = query_api.query(org=influx_org, query=query)
-            return result
+            return query_api.query(org=influx_org, query=query)
         except HTTPError as e:
             capture_exception(e)
             return []
@@ -307,8 +306,7 @@ def get_top_organisations(date_range: str, limit: str = ""):
                 dataset[org_id] = record.get_value()
             except ValueError:
                 logger.warning(
-                    "Bad InfluxDB data found with organisation %s"
-                    % record.values["organisation"].partition("-")[0]
+                    f'Bad InfluxDB data found with organisation {record.values["organisation"].partition("-")[0]}'
                 )
 
     return dataset

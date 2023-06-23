@@ -7,6 +7,8 @@ from django.db import migrations
 from ..models import Feature
 
 
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -15,8 +17,9 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RunSQL(
-            [("CREATE UNIQUE INDEX lowercase_feature_name ON " + Feature._meta.db_table +
-              "(lower(name), project_id);")],
+            [
+                f"CREATE UNIQUE INDEX lowercase_feature_name ON {Feature._meta.db_table}(lower(name), project_id);"
+            ],
             [("DROP INDEX lowercase_feature_name;")],
         )
     ]

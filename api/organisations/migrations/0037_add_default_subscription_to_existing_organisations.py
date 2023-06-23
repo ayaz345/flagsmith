@@ -11,10 +11,10 @@ def create_default_subscription(apps, schema_editor):
         subscription__isnull=True
     )
 
-    subscriptions_to_create = []
-    for organisation in organisations_without_subscription:
-        subscriptions_to_create.append(Subscription(organisation=organisation))
-
+    subscriptions_to_create = [
+        Subscription(organisation=organisation)
+        for organisation in organisations_without_subscription
+    ]
     Subscription.objects.bulk_create(subscriptions_to_create)
 
 

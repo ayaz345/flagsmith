@@ -291,7 +291,7 @@ def master_api_key_client(master_api_key):
     # Can not use `api_client` fixture here because:
     # https://docs.pytest.org/en/6.2.x/fixture.html#fixtures-can-be-requested-more-than-once-per-test-return-values-are-cached
     api_client = APIClient()
-    api_client.credentials(HTTP_AUTHORIZATION="Api-Key " + master_api_key[1])
+    api_client.credentials(HTTP_AUTHORIZATION=f"Api-Key {master_api_key[1]}")
     return api_client
 
 

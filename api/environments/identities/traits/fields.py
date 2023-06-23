@@ -32,6 +32,6 @@ class TraitValueField(serializers.Field):
         return_value = value.get("value") if isinstance(value, dict) else value
 
         if return_value is None:
-            logger.warning("Trait value is not an accepted type. Value was %s" % value)
+            logger.warning(f"Trait value is not an accepted type. Value was {value}")
 
         return return_value

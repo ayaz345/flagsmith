@@ -106,7 +106,7 @@ class InviteSerializer(serializers.ModelSerializer):
             email=attrs["email"], organisation__id=self.context.get("organisation")
         ).exists():
             raise serializers.ValidationError(
-                {"email": "Invite for email %s already exists" % attrs["email"]}
+                {"email": f'Invite for email {attrs["email"]} already exists'}
             )
         return super(InviteSerializer, self).validate(attrs)
 
@@ -151,7 +151,7 @@ class MultiInvitesSerializer(serializers.Serializer):
                 email=email, organisation__id=self.context.get("organisation")
             ).exists():
                 raise serializers.ValidationError(
-                    {"emails": "Invite for email %s already exists" % email}
+                    {"emails": f"Invite for email {email} already exists"}
                 )
         return super(MultiInvitesSerializer, self).validate(attrs)
 
@@ -175,11 +175,9 @@ class UpdateSubscriptionSerializer(serializers.Serializer):
         organisation = self._get_organisation()
 
         if settings.ENABLE_CHARGEBEE:
-            subscription_data = get_subscription_data_from_hosted_page(
+            if subscription_data := get_subscription_data_from_hosted_page(
                 hosted_page_id=validated_data["hosted_page_id"]
-            )
-
-            if subscription_data:
+            ):
                 Subscription.objects.update_or_create(
                     organisation=organisation, defaults=subscription_data
                 )

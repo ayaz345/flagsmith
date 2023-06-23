@@ -168,7 +168,7 @@ class IdentityTestCase(TestCase):
             "api-v1:environments:environment-identities-list",
             args=[self.environment.api_key],
         )
-        url = "%s?q=%s" % (base_url, self.identifier)
+        url = f"{base_url}?q={self.identifier}"
 
         # When
         res = self.client.get(url)
@@ -209,7 +209,7 @@ class IdentityTestCase(TestCase):
             "api-v1:environments:environment-identities-list",
             args=[self.environment.api_key],
         )
-        url = "%s?q=%s" % (base_url, self.identifier.upper())
+        url = f"{base_url}?q={self.identifier.upper()}"
 
         # When
         res = self.client.get(url)
@@ -226,7 +226,7 @@ class IdentityTestCase(TestCase):
             "api-v1:environments:environment-identities-list",
             args=[self.environment.api_key],
         )
-        url = "%s?q=%s" % (base_url, "some invalid search string")
+        url = f"{base_url}?q=some invalid search string"
 
         # When
         res = self.client.get(url)
@@ -244,7 +244,7 @@ class IdentityTestCase(TestCase):
             "api-v1:environments:environment-identities-list",
             args=[self.environment.api_key],
         )
-        url = "%s?q=%s&page_size=%s" % (base_url, "user", "10")
+        url = f"{base_url}?q=user&page_size=10"
 
         res1 = self.client.get(url)
         second_page = res1.json().get("next")
@@ -309,7 +309,7 @@ class SDKIdentitiesTestCase(APITestCase):
     ):
         # Given
         base_url = reverse("api-v1:sdk-identities")
-        url = base_url + "?identifier=" + self.identity.identifier
+        url = f"{base_url}?identifier={self.identity.identifier}"
 
         # When
         response = self.client.get(url)
@@ -330,7 +330,7 @@ class SDKIdentitiesTestCase(APITestCase):
             api_key="abc-123", environment=self.environment
         )
         base_url = reverse("api-v1:sdk-identities")
-        url = base_url + "?identifier=" + self.identity.identifier
+        url = f"{base_url}?identifier={self.identity.identifier}"
 
         # When
         response = self.client.get(url)
@@ -348,7 +348,7 @@ class SDKIdentitiesTestCase(APITestCase):
     def test_identities_endpoint_returns_traits(self, mock_amplitude_wrapper):
         # Given
         base_url = reverse("api-v1:sdk-identities")
-        url = base_url + "?identifier=" + self.identity.identifier
+        url = f"{base_url}?identifier={self.identity.identifier}"
         trait = Trait.objects.create(
             identity=self.identity,
             trait_key="trait_key",
@@ -397,7 +397,7 @@ class SDKIdentitiesTestCase(APITestCase):
     ):
         # Given
         base_url = reverse("api-v1:sdk-identities")
-        url = base_url + "?identifier=" + self.identity.identifier
+        url = f"{base_url}?identifier={self.identity.identifier}"
 
         trait_key = "trait_key"
         trait_value = "trait_value"
@@ -445,16 +445,9 @@ class SDKIdentitiesTestCase(APITestCase):
     ):
         # Given
         base_url = reverse("api-v1:sdk-identities")
-        url = (
-            base_url
-            + "?identifier="
-            + self.identity.identifier
-            + "&feature="
-            + self.feature_1.name
-        )
-
         trait_key = "trait_key"
         trait_value = "trait_value"
+        url = f"{base_url}?identifier={self.identity.identifier}&feature={self.feature_1.name}"
         Trait.objects.create(
             identity=self.identity,
             trait_key=trait_key,
@@ -499,7 +492,7 @@ class SDKIdentitiesTestCase(APITestCase):
     ):
         # Given
         base_url = reverse("api-v1:sdk-identities")
-        url = base_url + "?identifier=" + self.identity.identifier
+        url = f"{base_url}?identifier={self.identity.identifier}"
 
         segment = Segment.objects.create(name="Test Segment", project=self.project)
         segment_rule = SegmentRule.objects.create(
@@ -546,7 +539,7 @@ class SDKIdentitiesTestCase(APITestCase):
     ):
         # Given
         base_url = reverse("api-v1:sdk-identities")
-        url = base_url + "?identifier=" + self.identity.identifier
+        url = f"{base_url}?identifier={self.identity.identifier}"
 
         segment = Segment.objects.create(name="Test Segment", project=self.project)
         segment_rule = SegmentRule.objects.create(
@@ -738,7 +731,7 @@ class SDKIdentitiesTestCase(APITestCase):
     ):
         # Given
         base_url = reverse("api-v1:sdk-identities")
-        url = base_url + "?identifier=" + self.identity.identifier
+        url = f"{base_url}?identifier={self.identity.identifier}"
 
         # When
         self.client.get(url)
@@ -820,7 +813,7 @@ class SDKIdentitiesTestCase(APITestCase):
 
     def test_get_identities_request_includes_updated_at_header(self):
         # Given
-        url = "%s?identifier=identifier" % reverse("api-v1:sdk-identities")
+        url = f'{reverse("api-v1:sdk-identities")}?identifier=identifier'
 
         # When
         response = self.client.get(url)

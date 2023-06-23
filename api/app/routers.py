@@ -23,9 +23,7 @@ class PrimaryReplicaRouter:
             "default",
             *[f"replica_{i}" for i in range(1, settings.NUM_DB_REPLICAS + 1)],
         }
-        if obj1._state.db in db_set and obj2._state.db in db_set:
-            return True
-        return None
+        return True if obj1._state.db in db_set and obj2._state.db in db_set else None
 
     def allow_migrate(self, db, app_label, model_name=None, **hints):
         return db == "default"
@@ -38,17 +36,13 @@ class AnalyticsRouter:
         """
         Attempts to read analytics models go to 'analytics' database.
         """
-        if model._meta.app_label in self.route_app_labels:
-            return "analytics"
-        return None
+        return "analytics" if model._meta.app_label in self.route_app_labels else None
 
     def db_for_write(self, model, **hints):
         """
         Attempts to write analytics models go to 'analytics' database.
         """
-        if model._meta.app_label in self.route_app_labels:
-            return "analytics"
-        return None
+        return "analytics" if model._meta.app_label in self.route_app_labels else None
 
     def allow_relation(self, obj1, obj2, **hints):
         """

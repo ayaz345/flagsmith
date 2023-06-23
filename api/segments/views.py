@@ -71,8 +71,7 @@ class SegmentViewSet(viewsets.ModelViewSet):
                 "rules__rules__rules",
             )
 
-        identity_pk = self.request.query_params.get("identity")
-        if identity_pk:
+        if identity_pk := self.request.query_params.get("identity"):
             if identity_pk.isdigit():
                 identity = Identity.objects.get(pk=identity_pk)
                 segment_ids = [segment.id for segment in identity.get_segments()]
@@ -80,8 +79,7 @@ class SegmentViewSet(viewsets.ModelViewSet):
                 segment_ids = EdgeIdentity.dynamo_wrapper.get_segment_ids(identity_pk)
             queryset = queryset.filter(id__in=segment_ids)
 
-        search_term = self.request.query_params.get("q")
-        if search_term:
+        if search_term := self.request.query_params.get("q"):
             queryset = queryset.filter(name__icontains=search_term)
 
         return queryset

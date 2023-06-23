@@ -5,6 +5,8 @@ from __future__ import unicode_literals
 from django.db import migrations, models
 
 
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -21,10 +23,22 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='featuresegment',
             name='value_type',
-            field=models.CharField(blank=True, choices=[('int', 'Integer'), ('unicode', 'String'), ('bool', 'Boolean')], max_length=50, null=True),
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ('int', 'Integer'),
+                    ('unicode', 'String'),
+                    ('bool', 'Boolean'),
+                ],
+                max_length=50,
+                null=True,
+            ),
         ),
         migrations.AlterUniqueTogether(
             name='featurestate',
-            unique_together=set([('feature', 'environment', 'identity'), ('feature', 'environment', 'feature_segment')]),
+            unique_together={
+                ('feature', 'environment', 'identity'),
+                ('feature', 'environment', 'feature_segment'),
+            },
         ),
     ]

@@ -251,7 +251,7 @@ def test_search_identities_without_exact_match(
         args=[environment_api_key],
     )
 
-    url = "%s?q=%s" % (base_url, identifier)
+    url = f"{base_url}?q={identifier}"
     edge_identity_dynamo_wrapper_mock.search_items_with_identifier.return_value = {
         "Items": [identity_document],
         "Count": 1,

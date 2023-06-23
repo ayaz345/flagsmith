@@ -72,11 +72,10 @@ def _update_caches_with_influx_data(
         key = f"api_calls_{date_range}"
         org_calls = get_top_organisations(date_range, limit)
         for org_id, calls in org_calls.items():
-            subscription_info_cache = organisation_info_cache_dict.get(org_id)
-            if not subscription_info_cache:
-                # I don't think this is a valid case but worth checking / handling
-                continue
-            setattr(subscription_info_cache, key, calls)
+            if subscription_info_cache := organisation_info_cache_dict.get(
+                org_id
+            ):
+                setattr(subscription_info_cache, key, calls)
 
 
 def _update_caches_with_chargebee_data(

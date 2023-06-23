@@ -28,7 +28,7 @@ class ReadOnlyIfNotValidPlanMixin:
     def get_fields(self, *args, **kwargs):
         fields = super().get_fields(*args, **kwargs)
 
-        if not (self.context and "view" in self.context):
+        if not self.context or "view" not in self.context:
             raise RuntimeError("view must be in the context.")
 
         subscription = self.get_subscription()
@@ -37,7 +37,8 @@ class ReadOnlyIfNotValidPlanMixin:
 
         for field_name in field_names:
             if field_name in fields and (
-                not (subscription and subscription.plan)
+                not subscription
+                or not subscription.plan
                 or subscription.plan in invalid_plans
             ):
                 fields[field_name].read_only = True

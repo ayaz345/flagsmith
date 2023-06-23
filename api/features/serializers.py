@@ -299,8 +299,7 @@ class FeatureStateSerializerBasic(WritableNestedModelSerializer):
         environment = attrs.get("environment")
         identity = attrs.get("identity")
         feature_segment = attrs.get("feature_segment")
-        identifier = attrs.pop("identifier", None)
-        if identifier:
+        if identifier := attrs.pop("identifier", None):
             try:
                 identity = Identity.objects.get(
                     identifier=identifier, environment=environment
@@ -309,16 +308,16 @@ class FeatureStateSerializerBasic(WritableNestedModelSerializer):
             except Identity.DoesNotExist:
                 raise serializers.ValidationError("Invalid identifier")
 
-        if identity and not identity.environment == environment:
+        if identity and identity.environment != environment:
             raise serializers.ValidationError("Identity does not exist in environment.")
 
-        if feature_segment and not feature_segment.environment == environment:
+        if feature_segment and feature_segment.environment != environment:
             raise serializers.ValidationError(
                 "Feature Segment does not belong to environment."
             )
 
         mv_values = attrs.get("multivariate_feature_state_values", [])
-        if sum([v["percentage_allocation"] for v in mv_values]) > 100:
+        if sum(v["percentage_allocation"] for v in mv_values) > 100:
             raise serializers.ValidationError(
                 "Multivariate percentage values exceed 100%."
             )

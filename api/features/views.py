@@ -131,10 +131,7 @@ class FeatureViewSet(viewsets.ModelViewSet):
 
         queryset = self._filter_queryset(queryset)
 
-        sort = "%s%s" % (
-            "-" if query_data["sort_direction"] == "DESC" else "",
-            query_data["sort_field"],
-        )
+        sort = f'{"-" if query_data["sort_direction"] == "DESC" else ""}{query_data["sort_field"]}'
         queryset = queryset.order_by(sort)
 
         return queryset
@@ -345,17 +342,13 @@ class BaseFeatureStateViewSet(viewsets.ModelViewSet):
         """
         Get environment object from URL parameters in request.
         """
-        environment = Environment.objects.get(
-            api_key=self.kwargs["environment_api_key"]
-        )
-        return environment
+        return Environment.objects.get(api_key=self.kwargs["environment_api_key"])
 
     def get_identity_from_request(self, environment):
         """
         Get identity object from URL parameters in request.
         """
-        identity = Identity.objects.get(pk=self.kwargs["identity_pk"])
-        return identity
+        return Identity.objects.get(pk=self.kwargs["identity_pk"])
 
     def create(self, request, *args, **kwargs):
         """
@@ -384,8 +377,7 @@ class BaseFeatureStateViewSet(viewsets.ModelViewSet):
             error = {"detail": "Feature does not exist in project"}
             return Response(error, status=status.HTTP_400_BAD_REQUEST)
 
-        identity_pk = self.kwargs.get("identity_pk")
-        if identity_pk:
+        if identity_pk := self.kwargs.get("identity_pk"):
             data["identity"] = identity_pk
 
         serializer = self.get_serializer(data=data)
@@ -527,7 +519,7 @@ class SimpleFeatureStateViewSet(
     filterset_fields = ["environment", "feature", "feature_segment"]
 
     def get_queryset(self):
-        if not self.action == "list":
+        if self.action != "list":
             return FeatureState.objects.all()
 
         try:
@@ -695,10 +687,9 @@ def organisation_has_got_feature(request, organisation):
     referer = request.META.get("HTTP_REFERER")
     if not referer or "bullet-train.io" in referer:
         return None
-    else:
-        organisation.has_requested_features = True
-        organisation.save()
-        return True
+    organisation.has_requested_features = True
+    organisation.save()
+    return True
 
 
 @swagger_auto_schema(

@@ -6,6 +6,8 @@ from django.db import migrations
 
 from ..models import Organisation
 
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -14,6 +16,8 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RunSQL(
-            [("Update " + Organisation._meta.db_table + " SET free_to_use_subscription = true;")],
+            [
+                f"Update {Organisation._meta.db_table} SET free_to_use_subscription = true;"
+            ]
         )
     ]

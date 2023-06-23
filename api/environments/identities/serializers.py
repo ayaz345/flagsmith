@@ -45,8 +45,7 @@ class IdentitySerializer(serializers.ModelSerializer):
         ).exists():
             raise ValidationError(
                 {
-                    "identifier": "Identity with identifier '%s' already exists in this environment"
-                    % identifier
+                    "identifier": f"Identity with identifier '{identifier}' already exists in this environment"
                 }
             )
         return super(IdentitySerializer, self).save(**kwargs)

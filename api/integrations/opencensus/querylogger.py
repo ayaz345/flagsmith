@@ -21,7 +21,7 @@ class QueryLogger:
         alias = context["connection"].alias
 
         span = tracer.start_span()
-        span.name = "{}.query".format(vendor)
+        span.name = f"{vendor}.query"
         span.span_kind = span_module.SpanKind.CLIENT
 
         tracer.add_attribute_to_current_span("component", vendor)

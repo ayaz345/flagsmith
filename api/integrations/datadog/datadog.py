@@ -33,5 +33,5 @@ class DataDogWrapper(AbstractBaseEventIntegrationWrapper):
             f"{self.events_url}?api_key={self.api_key}", data=json.dumps(event)
         )
         logger.debug(
-            "Sent event to DataDog. Response code was %s" % response.status_code
+            f"Sent event to DataDog. Response code was {response.status_code}"
         )

@@ -79,12 +79,10 @@ class ProjectViewSet(viewsets.ModelViewSet):
                 permissions=["VIEW_PROJECT"]
             )
 
-        organisation_id = self.request.query_params.get("organisation")
-        if organisation_id:
+        if organisation_id := self.request.query_params.get("organisation"):
             queryset = queryset.filter(organisation__id=organisation_id)
 
-        project_uuid = self.request.query_params.get("uuid")
-        if project_uuid:
+        if project_uuid := self.request.query_params.get("uuid"):
             queryset = queryset.filter(uuid=project_uuid)
 
         return queryset

@@ -10,11 +10,14 @@ def create_webhooks(apps, schema_editor):
     Webhook = apps.get_model('environments', 'Webhook')
     Environment = apps.get_model('environments', 'Environment')
 
-    webhooks_to_create = []
-    for environment in Environment.objects.exclude(webhook_url=None):
-        webhooks_to_create.append(
-            Webhook(environment=environment, url=environment.webhook_url, enabled=environment.webhooks_enabled))
-
+    webhooks_to_create = [
+        Webhook(
+            environment=environment,
+            url=environment.webhook_url,
+            enabled=environment.webhooks_enabled,
+        )
+        for environment in Environment.objects.exclude(webhook_url=None)
+    ]
     Webhook.objects.bulk_create(webhooks_to_create)
     Environment.objects.exclude(webhook_url=None).update(webhook_url=None)
 

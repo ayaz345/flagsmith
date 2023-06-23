@@ -140,10 +140,7 @@ class FFAdminUser(LifecycleModel, AbstractUser):
         if self.google_user_id:
             return AuthType.GOOGLE.value
 
-        if self.github_user_id:
-            return AuthType.GITHUB.value
-
-        return AuthType.EMAIL.value
+        return AuthType.GITHUB.value if self.github_user_id else AuthType.EMAIL.value
 
     @property
     def full_name(self):
@@ -222,8 +219,7 @@ class FFAdminUser(LifecycleModel, AbstractUser):
         self.permission_groups.remove(*organisation.permission_groups.all())
 
     def get_organisation_role(self, organisation):
-        user_organisation = self.get_user_organisation(organisation)
-        if user_organisation:
+        if user_organisation := self.get_user_organisation(organisation):
             return user_organisation.role
 
     def get_organisation_role_by_id(self, organisation_id: int) -> typing.Optional[str]:
@@ -231,8 +227,7 @@ class FFAdminUser(LifecycleModel, AbstractUser):
         return user_organisation.role
 
     def get_organisation_join_date(self, organisation):
-        user_organisation = self.get_user_organisation(organisation)
-        if user_organisation:
+        if user_organisation := self.get_user_organisation(organisation):
             return user_organisation.date_joined
 
     def get_user_organisation(self, organisation):
@@ -512,7 +507,7 @@ class UserPermissionGroup(models.Model):
         if len(user_ids) != len(users_to_add):
             missing_ids = set(users_to_add).difference({u.id for u in users_to_add})
             raise FFAdminUser.DoesNotExist(
-                "Users %s do not exist in this organisation" % ", ".join(missing_ids)
+                f'Users {", ".join(missing_ids)} do not exist in this organisation'
             )
         self.users.add(*users_to_add)
 

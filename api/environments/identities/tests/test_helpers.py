@@ -46,7 +46,7 @@ def test_get_hashed_percentage_for_object_ids_should_be_evenly_distributed():
     """
     test_sample = 500  # number of ids to sample in each list
     num_test_buckets = 50  # split the sample into 'buckets' to check that the values are evenly distributed
-    test_bucket_size = int(test_sample / num_test_buckets)
+    test_bucket_size = test_sample // num_test_buckets
     error_factor = 0.1
 
     # Given
@@ -67,7 +67,8 @@ def test_get_hashed_percentage_for_object_ids_should_be_evenly_distributed():
         )
 
         assert all(
-            [value <= bucket_value_limit for value in values[bucket_start:bucket_end]]
+            value <= bucket_value_limit
+            for value in values[bucket_start:bucket_end]
         )
 
 

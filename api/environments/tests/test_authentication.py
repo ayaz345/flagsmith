@@ -35,9 +35,6 @@ class EnvironmentKeyAuthenticationTestCase(TestCase):
         # When
         self.authenticator.authenticate(request)
 
-        # Then - authentication passes
-        pass
-
     def test_authenticate_raises_authentication_failed_if_request_missing_environment_key(
         self,
     ):

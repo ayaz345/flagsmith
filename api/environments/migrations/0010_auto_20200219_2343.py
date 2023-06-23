@@ -8,10 +8,10 @@ from environments.permissions.constants import ENVIRONMENT_PERMISSIONS
 def create_default_permissions(apps, schema_editor):
     EnvironmentPermission = apps.get_model('environments', 'EnvironmentPermission')
 
-    environment_permissions = []
-    for permission in ENVIRONMENT_PERMISSIONS:
-        environment_permissions.append(EnvironmentPermission(key=permission[0], description=permission[1]))
-
+    environment_permissions = [
+        EnvironmentPermission(key=permission[0], description=permission[1])
+        for permission in ENVIRONMENT_PERMISSIONS
+    ]
     EnvironmentPermission.objects.bulk_create(environment_permissions)
 
 

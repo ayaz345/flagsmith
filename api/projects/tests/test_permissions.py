@@ -197,7 +197,7 @@ class UserPermissionGroupProjectPermissionsTestCase(TestCase):
             )
 
         # Then
-        assert all(result for result in results)
+        assert all(results)
 
     def test_user_with_view_project_permission_can_view_project(self):
         # Given

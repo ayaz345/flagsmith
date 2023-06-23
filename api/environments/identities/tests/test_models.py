@@ -633,7 +633,7 @@ class IdentityTestCase(APITestCase):
         # the response from the method has 3 traits
         assert len(trait_models) == 3
         # and they are all Trait objects
-        assert all([isinstance(trait, Trait) for trait in trait_models])
+        assert all(isinstance(trait, Trait) for trait in trait_models)
 
         # but the database has none
         assert Trait.objects.filter(identity=identity).count() == 0
@@ -753,9 +753,9 @@ class IdentityTestCase(APITestCase):
             rule=rule_two, operator=LESS_THAN_INCLUSIVE, property="bar", value=20
         )
 
+        property_name = "foo"
         # And nested rules to test the number of queries
-        for i in range(50):
-            property_name = "foo"
+        for _ in range(50):
             nested_rule = SegmentRule.objects.create(
                 rule=rule_two, type=SegmentRule.ALL_RULE
             )

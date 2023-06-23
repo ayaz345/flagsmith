@@ -19,9 +19,7 @@ def run_tasks(num_tasks: int = 1) -> typing.List[TaskRun]:
     if num_tasks < 1:
         raise ValueError("Number of tasks to process must be at least one")
 
-    tasks = Task.objects.get_tasks_to_process(num_tasks)
-
-    if tasks:
+    if tasks := Task.objects.get_tasks_to_process(num_tasks):
         executed_tasks = []
         task_runs = []
 
@@ -49,11 +47,7 @@ def run_recurring_tasks(num_tasks: int = 1) -> typing.List[RecurringTask]:
     if num_tasks < 1:
         raise ValueError("Number of tasks to process must be at least one")
 
-    # NOTE: We will probably see a lot of delay in the execution of recurring tasks
-    # if the tasks take longer then `run_every` to execute. This is not
-    # a problem for now, but we should be mindful of this limitation
-    tasks = RecurringTask.objects.get_tasks_to_process(num_tasks)
-    if tasks:
+    if tasks := RecurringTask.objects.get_tasks_to_process(num_tasks):
         task_runs = []
         executed_tasks = []
 

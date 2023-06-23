@@ -15,9 +15,7 @@ class TagViewSet(viewsets.ModelViewSet):
             self.request.user.get_permitted_projects(["VIEW_PROJECT"]),
             pk=self.kwargs["project_pk"],
         )
-        queryset = project.tags.all()
-
-        return queryset
+        return project.tags.all()
 
     def perform_create(self, serializer):
         project_id = self.kwargs["project_pk"]
