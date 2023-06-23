@@ -56,10 +56,7 @@ class FFAdminUserViewSet(UserViewSet):
         """
         Used for throttling create(signup) action
         """
-        throttles = []
-        if self.action == "create":
-            throttles = [ScopedRateThrottle()]
-        return throttles
+        return [ScopedRateThrottle()] if self.action == "create" else []
 
     def perform_destroy(self, instance):
         instance.delete(

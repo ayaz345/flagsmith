@@ -199,11 +199,10 @@ class OrganisationTestCase(TestCase):
 
         # When
         invite_list_response = self.client.get(
-            "/api/v1/organisations/%s/invites/" % organisation.id
+            f"/api/v1/organisations/{organisation.id}/invites/"
         )
         invite_resend_response = self.client.post(
-            "/api/v1/organisations/%s/invites/%s/resend/"
-            % (organisation.id, invite_1.id)
+            f"/api/v1/organisations/{organisation.id}/invites/{invite_1.id}/resend/"
         )
 
         # Then
@@ -365,7 +364,7 @@ class OrganisationTestCase(TestCase):
         url = reverse("api-v1:organisations:organisation-usage", args=[organisation.pk])
 
         influx_org = settings.INFLUXDB_ORG
-        read_bucket = settings.INFLUXDB_BUCKET + "_downsampled_15m"
+        read_bucket = f"{settings.INFLUXDB_BUCKET}_downsampled_15m"
         expected_query = (
             (
                 f'from(bucket:"{read_bucket}") '

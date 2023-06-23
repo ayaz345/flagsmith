@@ -32,8 +32,9 @@ class DynamoProjectMetadata:
 
     @classmethod
     def get_or_new(cls, project_id: int) -> "DynamoProjectMetadata":
-        document = project_metadata_table.get_item(Key={"id": project_id}).get("Item")
-        if document:
+        if document := project_metadata_table.get_item(Key={"id": project_id}).get(
+            "Item"
+        ):
             return cls(**document)
         return cls(id=project_id)
 
@@ -45,7 +46,7 @@ class DynamoProjectMetadata:
                 if self.triggered_at
                 else ProjectIdentityMigrationStatus.MIGRATION_NOT_STARTED
             )
-        elif self.migration_start_time and not self.migration_end_time:
+        elif not self.migration_end_time:
             return ProjectIdentityMigrationStatus.MIGRATION_IN_PROGRESS
         return ProjectIdentityMigrationStatus.MIGRATION_COMPLETED
 

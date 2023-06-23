@@ -90,10 +90,9 @@ class Command(BaseCommand):
         clear_unhealthy_threads()
         while self._monitor_threads:
             time.sleep(1)
-            unhealthy_threads = self._get_unhealthy_threads(
+            if unhealthy_threads := self._get_unhealthy_threads(
                 ms_before_unhealthy=grace_period_ms + sleep_interval_ms
-            )
-            if unhealthy_threads:
+            ):
                 write_unhealthy_threads(unhealthy_threads)
 
         [t.join() for t in self._threads]
@@ -106,14 +105,14 @@ class Command(BaseCommand):
     def _get_unhealthy_threads(
         self, ms_before_unhealthy: int
     ) -> typing.List[TaskRunner]:
-        unhealthy_threads = []
         healthy_threshold = timezone.now() - timedelta(milliseconds=ms_before_unhealthy)
 
-        for thread in self._threads:
+        return [
+            thread
+            for thread in self._threads
             if (
                 not thread.is_alive()
                 or not thread.last_checked_for_tasks
                 or thread.last_checked_for_tasks < healthy_threshold
-            ):
-                unhealthy_threads.append(thread)
-        return unhealthy_threads
+            )
+        ]

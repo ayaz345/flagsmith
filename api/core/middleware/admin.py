@@ -19,7 +19,7 @@ class AdminWhitelistMiddleware:
                 and ip not in settings.ALLOWED_ADMIN_IP_ADDRESSES
             ):
                 # IP address not allowed!
-                logger.info("Denying access to admin for ip address %s" % ip)
+                logger.info(f"Denying access to admin for ip address {ip}")
                 raise PermissionDenied()
 
         return self.get_response(request)

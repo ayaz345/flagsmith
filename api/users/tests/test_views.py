@@ -297,10 +297,8 @@ class UserPermissionGroupViewSetTestCase(TestCase):
 
         assert create_response.status_code == status.HTTP_403_FORBIDDEN
         assert all(
-            [
-                response.status_code == status.HTTP_404_NOT_FOUND
-                for response in _404_responses
-            ]
+            response.status_code == status.HTTP_404_NOT_FOUND
+            for response in _404_responses
         )
         assert UserPermissionGroup.objects.filter(name=group_name).exists()
 

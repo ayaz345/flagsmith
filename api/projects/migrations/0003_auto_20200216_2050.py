@@ -8,10 +8,10 @@ from projects.permissions import PROJECT_PERMISSIONS
 def insert_default_permissions(apps, schema_model):
     ProjectPermission = apps.get_model('projects', 'ProjectPermission')
 
-    project_permissions = []
-    for permission in PROJECT_PERMISSIONS:
-        project_permissions.append(ProjectPermission(key=permission[0], description=permission[1]))
-
+    project_permissions = [
+        ProjectPermission(key=permission[0], description=permission[1])
+        for permission in PROJECT_PERMISSIONS
+    ]
     ProjectPermission.objects.bulk_create(project_permissions)
 
 

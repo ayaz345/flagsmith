@@ -23,8 +23,7 @@ class SelfHostedTelemetryWrapper:
                 timeout=2,
             )
             logger.debug(
-                "Sent telemetry heartbeat to Flagsmith. Response code was %s"
-                % response.status_code
+                f"Sent telemetry heartbeat to Flagsmith. Response code was {response.status_code}"
             )
         except requests.ConnectionError:
             logger.debug("Unable to send telemetry heartbeat to Flagsmith.")

@@ -69,19 +69,16 @@ class GithubUser:
             f"{GITHUB_API_URL}/user/emails", headers=self.headers
         )
 
-        # response from github should be a list of dictionaries, this will find the first entry that is both verified
-        # and marked as primary (there should only be one).
-        primary_email_data = next(
+        if primary_email_data := next(
             filter(
-                lambda email_data: email_data["primary"] and email_data["verified"],
+                lambda email_data: email_data["primary"]
+                and email_data["verified"],
                 emails_response.json(),
             ),
             None,
-        )
-
-        if not primary_email_data:
+        ):
+            return primary_email_data["email"]
+        else:
             raise GithubError(
                 "User does not have a verified email address with Github."
             )
-
-        return primary_email_data["email"]

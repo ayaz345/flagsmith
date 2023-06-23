@@ -36,8 +36,7 @@ class _BaseAuditLogViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         if is_system_event := serializer.data.get("is_system_event") is not None:
             q = q & Q(is_system_event=is_system_event)
 
-        search = serializer.data.get("search")
-        if search:
+        if search := serializer.data.get("search"):
             q = q & Q(log__icontains=search)
 
         return AuditLog.objects.filter(q).select_related(

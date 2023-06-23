@@ -37,7 +37,7 @@ def login_with_google(request):
         token = serializer.save()
         return Response(data=CustomTokenSerializer(instance=token).data)
     except GoogleError as e:
-        logger.warning("%s: %s" % (GOOGLE_AUTH_ERROR_MESSAGE, str(e)))
+        logger.warning(f"{GOOGLE_AUTH_ERROR_MESSAGE}: {str(e)}")
         return Response(
             data={"message": GOOGLE_AUTH_ERROR_MESSAGE},
             status=status.HTTP_502_BAD_GATEWAY,
@@ -60,7 +60,7 @@ def login_with_github(request):
         token = serializer.save()
         return Response(data=CustomTokenSerializer(instance=token).data)
     except GithubError as e:
-        logger.warning("%s: %s" % (GITHUB_AUTH_ERROR_MESSAGE, str(e)))
+        logger.warning(f"{GITHUB_AUTH_ERROR_MESSAGE}: {str(e)}")
         return Response(
             data={"message": GITHUB_AUTH_ERROR_MESSAGE},
             status=status.HTTP_502_BAD_GATEWAY,

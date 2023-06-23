@@ -5,6 +5,8 @@ from __future__ import unicode_literals
 from django.db import migrations
 
 
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -14,7 +16,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterUniqueTogether(
-            name='invite',
-            unique_together=set([('email', 'organisation')]),
-        ),
+            name='invite', unique_together={('email', 'organisation')}
+        )
     ]

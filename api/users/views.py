@@ -63,18 +63,17 @@ class InitialConfigurationView(PermissionRequiredMixin, FormView):
 
 class AdminInitView(View):
     def get(self, request):
-        if FFAdminUser.objects.count() == 0:
-            admin = FFAdminUser.objects.create_superuser(
-                settings.ADMIN_EMAIL,
-                settings.ADMIN_INITIAL_PASSWORD,
-                is_active=True,
-            )
-            admin.save()
-            return HttpResponse("ADMIN USER CREATED")
-        else:
+        if FFAdminUser.objects.count() != 0:
             return HttpResponse(
                 "FAILED TO INIT ADMIN USER. USER(S) ALREADY EXIST IN SYSTEM."
             )
+        admin = FFAdminUser.objects.create_superuser(
+            settings.ADMIN_EMAIL,
+            settings.ADMIN_INITIAL_PASSWORD,
+            is_active=True,
+        )
+        admin.save()
+        return HttpResponse("ADMIN USER CREATED")
 
 
 @method_decorator(
@@ -140,9 +139,7 @@ def password_reset_redirect(request, uidb64, token):
     protocol = "https" if request.is_secure() else "https"
     current_site = get_current_site(request)
     domain = current_site.domain
-    return redirect(
-        protocol + "://" + domain + "/password-reset/" + uidb64 + "/" + token
-    )
+    return redirect(f"{protocol}://{domain}/password-reset/{uidb64}/{token}")
 
 
 class UserPermissionGroupViewSet(viewsets.ModelViewSet):

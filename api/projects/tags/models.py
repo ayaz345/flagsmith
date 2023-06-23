@@ -16,4 +16,4 @@ class Tag(AbstractBaseExportableModel):
         ordering = ("id",)  # explicit ordering to prevent pagination warnings
 
     def __str__(self):
-        return "Tag %s" % self.label
+        return f"Tag {self.label}"

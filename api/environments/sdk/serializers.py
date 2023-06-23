@@ -100,7 +100,7 @@ class SDKBulkCreateUpdateTraitSerializer(SDKCreateUpdateTraitSerializer):
                     # item will be in the format:
                     # {"identity": {"identifier": "foo"}, "trait_key": "foo", "trait_value": "bar"}
                     identity_trait_items[item["identity"]["identifier"]].append(
-                        dict((k, v) for k, v in item.items() if k != "identity")
+                        {k: v for k, v in item.items() if k != "identity"}
                     )
                 return identity_trait_items
 

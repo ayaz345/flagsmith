@@ -56,9 +56,7 @@ def get_item_generator(item: ChargebeeItem) -> Generator[ChargebeeResult, None, 
         entries = getattr(chargebee, item.value).list(
             {"limit": 100, "offset": next_offset}
         )
-        for entry in entries:
-            yield entry
-
+        yield from entries
         if entries.next_offset:
             next_offset = entries.next_offset
             continue

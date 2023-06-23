@@ -103,19 +103,13 @@ class OrganisationUsersPermission(BasePermission):
         if request.user.is_organisation_admin(organisation):
             return True
 
-        if view.action == "list" and request.user.belongs_to(organisation.id):
-            return True
-
-        return False
+        return bool(view.action == "list" and request.user.belongs_to(organisation.id))
 
     def has_object_permission(self, request, view, obj):
         organisation_id = view.kwargs.get("organisation_pk")
         organisation = Organisation.objects.get(id=organisation_id)
 
-        if request.user.is_organisation_admin(organisation):
-            return True
-
-        return False
+        return bool(request.user.is_organisation_admin(organisation))
 
 
 class UserPermissionGroupPermission(BasePermission):

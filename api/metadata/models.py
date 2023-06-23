@@ -56,9 +56,7 @@ class MetadataField(AbstractBaseExportableModel):
         return True
 
     def validate_bool(self, field_value: str):
-        if field_value.lower() in ["true", "false"]:
-            return True
-        return False
+        return field_value.lower() in {"true", "false"}
 
     def validate_url(self, field_value: str):
         try:

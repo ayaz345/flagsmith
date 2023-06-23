@@ -16,9 +16,7 @@ class GoogleAnalyticsMiddleware:
         # for each API request, trigger a call to Google Analytics to track the request
         track_request_googleanalytics_async(request)
 
-        response = self.get_response(request)
-
-        return response
+        return self.get_response(request)
 
 
 class InfluxDBMiddleware:
@@ -29,9 +27,7 @@ class InfluxDBMiddleware:
         # for each API request, trigger a call to InfluxDB to track the request
         track_request_influxdb_async(request)
 
-        response = self.get_response(request)
-
-        return response
+        return self.get_response(request)
 
 
 class APIUsageMiddleware:
@@ -49,6 +45,4 @@ class APIUsageMiddleware:
                 }
             )
 
-        response = self.get_response(request)
-
-        return response
+        return self.get_response(request)

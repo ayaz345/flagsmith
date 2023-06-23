@@ -7,7 +7,7 @@ class HealthChecksTestCase(APITestCase):
     def test_health_check_endpoint_returns_200(self):
         # Given
         base_url = reverse("health:health_check_home")
-        url = base_url + "?format=json"
+        url = f"{base_url}?format=json"
 
         # When
         res = self.client.get(url)

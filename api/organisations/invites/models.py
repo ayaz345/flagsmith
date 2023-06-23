@@ -106,4 +106,4 @@ class Invite(LifecycleModelMixin, AbstractBaseInviteModel):
         msg.send()
 
     def __str__(self):
-        return "%s %s" % (self.email, self.organisation.name)
+        return f"{self.email} {self.organisation.name}"

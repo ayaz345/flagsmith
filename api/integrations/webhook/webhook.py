@@ -23,7 +23,7 @@ class WebhookWrapper(AbstractBaseIdentityIntegrationWrapper):
     def _identify_user(self, data: typing.Mapping) -> None:
         response = call_integration_webhook(self.config, data)
         logger.debug(
-            "Sent event to Webhook. Response code was: %s" % response.status_code
+            f"Sent event to Webhook. Response code was: {response.status_code}"
         )
 
     def generate_user_data(

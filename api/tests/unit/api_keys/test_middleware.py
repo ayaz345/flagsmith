@@ -6,7 +6,7 @@ def test_MasterAPIKeyMiddleware_adds_master_api_key_object_to_request(
 ):
     # Given
     request = rf.get(
-        "/some-endpoint", HTTP_AUTHORIZATION="Api-Key " + master_api_key[1]
+        "/some-endpoint", HTTP_AUTHORIZATION=f"Api-Key {master_api_key[1]}"
     )
     mocked_get_response = mocker.MagicMock()
     middleware = MasterAPIKeyMiddleware(mocked_get_response)

@@ -32,8 +32,7 @@ class SegmentSerializer(serializers.ModelSerializer):
 class IntegrationFeatureStateSerializer(FeatureStateSerializerFull):
     def to_representation(self, instance):
         return_value = super().to_representation(instance)
-        value = return_value["feature_state_value"]
-        if value:
+        if value := return_value["feature_state_value"]:
             return_value["percentage_allocation"] = self.get_percentage_allocation(
                 value, instance
             )
@@ -45,7 +44,7 @@ class IntegrationFeatureStateSerializer(FeatureStateSerializerFull):
             int: Q(multivariate_feature_option__integer_value=value),
             bool: Q(multivariate_feature_option__boolean_value=value),
         }.get(type(value))
-        mv_fs = instance.multivariate_feature_state_values.filter(value_filter).first()
-
-        if mv_fs:
+        if mv_fs := instance.multivariate_feature_state_values.filter(
+            value_filter
+        ).first():
             return mv_fs.percentage_allocation

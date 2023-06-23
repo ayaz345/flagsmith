@@ -22,7 +22,7 @@ class HeapWrapper(AbstractBaseIdentityIntegrationWrapper):
 
     def _identify_user(self, user_data: dict) -> None:
         response = requests.post(self.url, json=user_data)
-        logger.debug("Sent event to Heap. Response code was: %s" % response.status_code)
+        logger.debug(f"Sent event to Heap. Response code was: {response.status_code}")
 
     def generate_user_data(
         self,

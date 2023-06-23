@@ -141,7 +141,7 @@ def test_environment_feature_states_filter_to_show_identity_override_only(
         "api-v1:environments:environment-featurestates-list",
         args=[environment.api_key],
     )
-    url = base_url + "?anyIdentity&feature=" + str(feature.id)
+    url = f"{base_url}?anyIdentity&feature={str(feature.id)}"
 
     # When
     res = client.get(url)

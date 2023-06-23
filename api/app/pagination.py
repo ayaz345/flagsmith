@@ -65,8 +65,7 @@ class EdgeIdentityPaginationInspector(PaginatorInspector):
 
 class EdgeIdentityPagination(CustomPagination):
     def paginate_queryset(self, dynamo_queryset, request, view=None):
-        last_evaluated_key = dynamo_queryset.get("LastEvaluatedKey")
-        if last_evaluated_key:
+        if last_evaluated_key := dynamo_queryset.get("LastEvaluatedKey"):
             self.last_evaluated_key = base64.b64encode(
                 json.dumps(last_evaluated_key).encode()
             )

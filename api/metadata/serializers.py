@@ -61,9 +61,7 @@ class MetaDataModelFieldSerializer(DeleteBeforeUpdateWritableNestedModelSerializ
                 ][requirement["content_type"].model]
             except KeyError:
                 raise serializers.ValidationError(
-                    "Invalid requirement for model {}".format(
-                        data["content_type"].model
-                    )
+                    f'Invalid requirement for model {data["content_type"].model}'
                 )
 
             if (
@@ -129,13 +127,11 @@ class SerializerWithMetadata(serializers.BaseSerializer):
 
         for requirement in requirements:
             required_for = self.get_required_for_object(requirement, data)
-            if required_for.id == requirement.object_id:
-                if not any(
-                    [
-                        field["model_field"] == requirement.model_field
-                        for field in metadata
-                    ]
-                ):
+            if all(
+                field["model_field"] != requirement.model_field
+                for field in metadata
+            ):
+                if required_for.id == requirement.object_id:
                     raise serializers.ValidationError(
                         {
                             "metadata": f"Missing required metadata field: {requirement.model_field.field.name}"

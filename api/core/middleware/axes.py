@@ -9,5 +9,4 @@ class AxesMiddleware(DefaultAxesMiddleware):
         ):
             return super().__call__(request)
 
-        response = self.get_response(request)
-        return response
+        return self.get_response(request)

@@ -27,9 +27,7 @@ class TagPermissions(BasePermission):
         if request.user.is_project_admin(obj.project):
             return True
 
-        if view.action == "detail" and request.user.has_project_permission(
-            "VIEW_PROJECT", project
-        ):
-            return True
-
-        return False
+        return bool(
+            view.action == "detail"
+            and request.user.has_project_permission("VIEW_PROJECT", project)
+        )

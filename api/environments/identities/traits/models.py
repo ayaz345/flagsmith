@@ -111,7 +111,7 @@ class Trait(models.Model):
         }
 
     def __str__(self):
-        return "Identity: %s - %s" % (self.identity.identifier, self.trait_key)
+        return f"Identity: {self.identity.identifier} - {self.trait_key}"
 
     def save(self, *args, **kwargs):
         if not self.identity.environment.project.organisation.persist_trait_data:

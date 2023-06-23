@@ -144,7 +144,7 @@ class Environment(
         environment_cache.delete(self.initial_value("api_key"))
 
     def __str__(self):
-        return "Project %s - Environment %s" % (self.project.name, self.name)
+        return f"Project {self.project.name} - Environment {self.name}"
 
     def natural_key(self):
         return (self.api_key,)
@@ -212,7 +212,7 @@ class Environment(
                 )
             return environment
         except cls.DoesNotExist:
-            logger.info("Environment with api_key %s does not exist" % api_key)
+            logger.info(f"Environment with api_key {api_key} does not exist")
 
     @classmethod
     def write_environments_to_dynamodb(
@@ -233,7 +233,7 @@ class Environment(
         # small querysets here, this shouldn't have a noticeable impact on performance.
         project = getattr(environments[0], "project", None)
         for environment in environments[1:]:
-            if not environment.project == project:
+            if environment.project != project:
                 raise RuntimeError("Environments must all belong to the same project.")
 
         if not all([project, project.enable_dynamo_db, environment_wrapper.is_enabled]):
@@ -357,7 +357,7 @@ class Webhook(AbstractBaseExportableWebhookModel):
         ):
             raise ValueError("Must provide both identity_id and identity_identifier.")
 
-        if (identity_id and identity_identifier) and feature_segment:
+        if identity_id and feature_segment:
             raise ValueError("Cannot provide identity information and feature segment")
 
         # TODO: refactor to use a serializer / schema

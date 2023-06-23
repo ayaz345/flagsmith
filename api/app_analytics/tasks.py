@@ -37,15 +37,14 @@ if settings.USE_POSTGRES_FOR_ANALYTICS:
 
 @register_task_handler()
 def track_feature_evaluation(environment_id, feature_evaluations):
-    feature_evaluation_objects = []
-    for feature_name, evaluation_count in feature_evaluations.items():
-        feature_evaluation_objects.append(
-            FeatureEvaluationRaw(
-                feature_name=feature_name,
-                environment_id=environment_id,
-                evaluation_count=evaluation_count,
-            )
+    feature_evaluation_objects = [
+        FeatureEvaluationRaw(
+            feature_name=feature_name,
+            environment_id=environment_id,
+            evaluation_count=evaluation_count,
         )
+        for feature_name, evaluation_count in feature_evaluations.items()
+    ]
     FeatureEvaluationRaw.objects.bulk_create(feature_evaluation_objects)
 
 
@@ -66,10 +65,9 @@ def get_start_of_current_bucket(bucket_size: int) -> datetime:
         raise ValueError("Bucket size cannot be greater than 60 minutes")
 
     current_time = timezone.now().replace(second=0, microsecond=0)
-    start_of_current_bucket = current_time - timezone.timedelta(
+    return current_time - timezone.timedelta(
         minutes=current_time.minute % bucket_size
     )
-    return start_of_current_bucket
 
 
 def get_time_buckets(

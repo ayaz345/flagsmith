@@ -41,13 +41,10 @@ class PipedriveLeadTracker(LeadTracker):
         ):
             return False
 
-        if any(
+        return not any(
             org.is_paid
             for org in user.organisations.select_related("subscription").all()
-        ):
-            return False
-
-        return True
+        )
 
     def create_lead(self, user: FFAdminUser) -> PipedriveLead:
         email_domain = user.email.split("@")[-1]
@@ -91,13 +88,12 @@ class PipedriveLeadTracker(LeadTracker):
 
     def create_organization(self, organization_domain: str) -> PipedriveOrganization:
         org_name = PipedriveOrganization.get_org_name_from_domain(organization_domain)
-        organization = self.client.create_organization(
+        return self.client.create_organization(
             name=org_name,
             organization_fields={
                 settings.PIPEDRIVE_DOMAIN_ORGANIZATION_FIELD_KEY: organization_domain
             },
         )
-        return organization
 
     @staticmethod
     def get_label_ids_for_user(user: FFAdminUser) -> typing.List[str]:
@@ -116,8 +112,7 @@ class PipedriveLeadTracker(LeadTracker):
     def _get_or_create_person(
         self, name: str, email: str, marketing_consent_given: bool = False
     ) -> PipedrivePerson:
-        existing_persons = self.client.search_persons(email)
-        if existing_persons:
+        if existing_persons := self.client.search_persons(email):
             if len(existing_persons) > 1:
                 logger.warning("Multiple persons found for email '%s'", email)
             # if there are multiple persons, just return the first one in the list

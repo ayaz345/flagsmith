@@ -335,7 +335,7 @@ def test_get_supported_content_type(admin_client, organisation):
     assert response.status_code == status.HTTP_200_OK
     assert len(response.json()) == len(METADATA_SUPPORTED_MODELS)
 
-    assert set(content_type["model"] for content_type in response.json()) == set(
+    assert {content_type["model"] for content_type in response.json()} == set(
         METADATA_SUPPORTED_MODELS
     )
 

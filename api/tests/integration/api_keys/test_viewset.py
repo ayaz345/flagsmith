@@ -148,10 +148,7 @@ def test_deleted_api_key_is_not_returned_in_list_and_cannot_be_used(
         "api-v1:organisations:organisation-master-api-keys-detail",
         args=[organisation, master_api_key["prefix"]],
     )
-    list_projects_url = "%s?organisation=%s" % (
-        reverse("api-v1:projects:project-list"),
-        organisation,
-    )
+    list_projects_url = f'{reverse("api-v1:projects:project-list")}?organisation={organisation}'
 
     # and we verify that before deletion, the master api key authenticated client
     # can retrieve the projects for the organisation

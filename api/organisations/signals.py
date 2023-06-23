@@ -19,11 +19,6 @@ def send_alert_if_cancelled(sender, instance, *args, **kwargs):
         and existing_object.cancellation_date != instance.cancellation_date
     ):
         FFAdminUser.send_alert_to_admin_users(
-            subject="Organisation %s has cancelled their subscription"
-            % instance.organisation.name,
-            message="Organisation %s has cancelled their subscription on %s"
-            % (
-                instance.organisation.name,
-                datetime.strftime(instance.cancellation_date, "%Y-%m-%d %H:%M"),
-            ),
+            subject=f"Organisation {instance.organisation.name} has cancelled their subscription",
+            message=f'Organisation {instance.organisation.name} has cancelled their subscription on {datetime.strftime(instance.cancellation_date, "%Y-%m-%d %H:%M")}',
         )

@@ -113,7 +113,7 @@ class FFAdminUserTestCase(TestCase):
         )
 
         # Then
-        assert len(list(environments)) == 0
+        assert not list(environments)
 
     def test_unique_user_organisation(self):
         # Given organisation and user

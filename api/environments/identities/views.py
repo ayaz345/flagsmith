@@ -46,8 +46,7 @@ class IdentityViewSet(viewsets.ModelViewSet):
         environment = self.get_environment_from_request()
         queryset = Identity.objects.filter(environment=environment)
 
-        search_query = self.request.query_params.get("q")
-        if search_query:
+        if search_query := self.request.query_params.get("q"):
             if search_query.startswith('"') and search_query.endswith('"'):
                 # Quoted searches should do an exact match just like Google
                 queryset = queryset.filter(
@@ -200,17 +199,15 @@ class SDKIdentities(SDKAPIView):
             FLAGSMITH_UPDATED_AT_HEADER: request.environment.updated_at.timestamp()
         }
 
-        feature_name = request.query_params.get("feature")
-        if feature_name:
-            response = self._get_single_feature_state_response(
+        return (
+            self._get_single_feature_state_response(
                 identity, feature_name, headers=headers
             )
-        else:
-            response = self._get_all_feature_states_for_user_response(
+            if (feature_name := request.query_params.get("feature"))
+            else self._get_all_feature_states_for_user_response(
                 identity, headers=headers
             )
-
-        return response
+        )
 
     def get_serializer_context(self):
         context = super(SDKIdentities, self).get_serializer_context()

@@ -15,9 +15,9 @@ logger = logging.getLogger(__name__)
 environment_cache = caches[settings.ENVIRONMENT_CACHE_NAME]
 
 GOOGLE_ANALYTICS_BASE_URL = "https://www.google-analytics.com"
-GOOGLE_ANALYTICS_COLLECT_URL = GOOGLE_ANALYTICS_BASE_URL + "/collect"
-GOOGLE_ANALYTICS_BATCH_URL = GOOGLE_ANALYTICS_BASE_URL + "/batch"
-DEFAULT_DATA = "v=1&tid=" + settings.GOOGLE_ANALYTICS_KEY
+GOOGLE_ANALYTICS_COLLECT_URL = f"{GOOGLE_ANALYTICS_BASE_URL}/collect"
+GOOGLE_ANALYTICS_BATCH_URL = f"{GOOGLE_ANALYTICS_BASE_URL}/batch"
+DEFAULT_DATA = f"v=1&tid={settings.GOOGLE_ANALYTICS_KEY}"
 
 # dictionary of resources to their corresponding actions
 # when tracking events in GA / Influx
@@ -47,8 +47,8 @@ def get_resource_from_uri(request_uri):
     :param request: (HttpRequest) the request being made
     """
     split_uri = request_uri.split("/")[1:]
-    if not (len(split_uri) >= 3 and split_uri[0] == "api"):
-        logger.debug("not tracking event for uri %s" % request_uri)
+    if len(split_uri) < 3 or split_uri[0] != "api":
+        logger.debug(f"not tracking event for uri {request_uri}")
         # this isn't an API request so we don't need to track an event for it
         return None
 
@@ -62,7 +62,7 @@ def track_request_googleanalytics(request):
 
     :param request: (HttpRequest) the request being made
     """
-    pageview_data = DEFAULT_DATA + "t=pageview&dp=" + quote(request.path, safe="")
+    pageview_data = f"{DEFAULT_DATA}t=pageview&dp=" + quote(request.path, safe="")
     # send pageview request
     requests.post(GOOGLE_ANALYTICS_COLLECT_URL, data=pageview_data)
 
@@ -89,8 +89,8 @@ def track_event(category, action, label="", value=""):
         + "&cid="
         + str(uuid.uuid4())
     )
-    data = data + "&el=" + label if label else data
-    data = data + "&ev=" + value if value else data
+    data = f"{data}&el={label}" if label else data
+    data = f"{data}&ev={value}" if value else data
     requests.post(GOOGLE_ANALYTICS_COLLECT_URL, data=data)
 
 

@@ -17,6 +17,4 @@ class TelemetryConfig(AppConfig):
                 telemetry = SelfHostedTelemetryWrapper()
                 telemetry.send_heartbeat()
             except Exception as e:
-                logger.debug(
-                    "Failed to send Telemetry data to Flagsmith. Exception was %s" % e
-                )
+                logger.debug(f"Failed to send Telemetry data to Flagsmith. Exception was {e}")

@@ -426,19 +426,16 @@ class SDKTraitsTest(APITestCase):
     def test_bulk_create_traits_when_float_value_sent_then_trait_value_correct(self):
         # Given
         url = reverse("api-v1:sdk-traits-bulk-create")
-        traits = []
-
         # add float value trait
         float_trait_key = "float_key_999"
         float_trait_value = 45.88
-        traits.append(
+        traits = [
             {
                 "trait_value": float_trait_value,
                 "trait_key": float_trait_key,
                 "identity": {"identifier": self.identity.identifier},
             }
-        )
-
+        ]
         # When
         response = self.client.put(
             url, data=json.dumps(traits), content_type="application/json"
@@ -726,7 +723,7 @@ class TraitViewSetTestCase(TestCase):
             "api-v1:environments:identities-traits-detail",
             args=[self.environment.api_key, self.identity.id, trait.id],
         )
-        url = base_url + "?deleteAllMatchingTraits=true"
+        url = f"{base_url}?deleteAllMatchingTraits=true"
 
         # When
         self.client.delete(url)
@@ -765,7 +762,7 @@ class TraitViewSetTestCase(TestCase):
             "api-v1:environments:identities-traits-detail",
             args=[self.environment.api_key, self.identity.id, trait.id],
         )
-        url = base_url + "?deleteAllMatchingTraits=true"
+        url = f"{base_url}?deleteAllMatchingTraits=true"
 
         # When
         self.client.delete(url)

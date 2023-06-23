@@ -67,7 +67,7 @@ class Project(LifecycleModelMixin, SoftDeleteExportableModel):
         ordering = ["id"]
 
     def __str__(self):
-        return "Project %s" % self.name
+        return f"Project {self.name}"
 
     def get_segments_from_cache(self):
         segments = project_segments_cache.get(self.id)

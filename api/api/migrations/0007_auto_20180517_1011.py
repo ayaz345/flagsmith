@@ -6,6 +6,8 @@ from django.db import migrations, models
 import django.db.models.deletion
 
 
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -28,16 +30,26 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='featurestate',
             name='identity',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='identityfeatures', to='api.Identity'),
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='identityfeatures',
+                to='api.Identity',
+            ),
         ),
         migrations.AlterField(
             model_name='featurestate',
             name='environment',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='featurestates', to='api.Environment'),
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='featurestates',
+                to='api.Environment',
+            ),
         ),
         migrations.AlterUniqueTogether(
             name='featurestate',
-            unique_together=set([('feature', 'environment', 'identity')]),
+            unique_together={('feature', 'environment', 'identity')},
         ),
         migrations.DeleteModel(
             name='IdentityFeature',

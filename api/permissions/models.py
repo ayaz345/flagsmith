@@ -28,7 +28,8 @@ class AbstractBasePermissionModel(models.Model):
         self.permissions.add(permission)
 
     def set_permissions(self, permission_keys: list):
-        permissions = []
-        for permission_key in permission_keys:
-            permissions.append(PermissionModel.objects.get(key=permission_key))
+        permissions = [
+            PermissionModel.objects.get(key=permission_key)
+            for permission_key in permission_keys
+        ]
         self.permissions.set(permissions)

@@ -25,7 +25,7 @@ def forward_identity_request(
     if not _should_forward(project_id):
         return
 
-    url = settings.EDGE_API_URL + "identities/"
+    url = f"{settings.EDGE_API_URL}identities/"
     headers = _get_headers(
         request_method, headers, json.dumps(request_data) if request_data else ""
     )
@@ -51,7 +51,7 @@ def forward_trait_request_sync(
     if not _should_forward(project_id):
         return
 
-    url = settings.EDGE_API_URL + "traits/"
+    url = f"{settings.EDGE_API_URL}traits/"
     payload = payload
     payload = json.dumps(payload)
     requests.post(
@@ -73,7 +73,7 @@ def forward_trait_requests(
 
 
 def _get_headers(request_method: str, headers: dict, payload: str = "") -> dict:
-    headers = {k: v for k, v in headers.items()}
+    headers = dict(headers)
     # Django by default sets the content-length to "", which in the case of get request(lack of content body)
     # Remains an empty string - an invalid value(according to edge alb and HTTP spec).
     # Hence, we need to remove this header to turn this into a valid request

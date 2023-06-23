@@ -56,7 +56,7 @@ def test_forward_identity_request_makes_correct_get_request(
 
     # Then
     args, kwargs = forwarder_mocked_requests.get.call_args
-    assert args[0] == forward_enable_settings.EDGE_API_URL + "identities/"
+    assert args[0] == f"{forward_enable_settings.EDGE_API_URL}identities/"
     assert kwargs["params"] == query_params
     assert kwargs["headers"]["X-Environment-Key"] == api_key
     assert kwargs["headers"][FLAGSMITH_SIGNATURE_HEADER]
@@ -87,7 +87,7 @@ def test_forward_identity_request_makes_correct_post_request(
 
     # Then
     args, kwargs = forwarder_mocked_requests.post.call_args
-    assert args[0] == forward_enable_settings.EDGE_API_URL + "identities/"
+    assert args[0] == f"{forward_enable_settings.EDGE_API_URL}identities/"
 
     assert kwargs["data"] == json.dumps(request_data)
     assert kwargs["headers"]["X-Environment-Key"] == api_key
@@ -122,7 +122,7 @@ def test_forward_trait_request_sync_makes_correct_post_request(
 
     # Then
     args, kwargs = forwarder_mocked_requests.post.call_args
-    assert args[0] == forward_enable_settings.EDGE_API_URL + "traits/"
+    assert args[0] == f"{forward_enable_settings.EDGE_API_URL}traits/"
 
     assert kwargs["data"] == json.dumps(request_data)
     assert kwargs["headers"]["X-Environment-Key"] == api_key

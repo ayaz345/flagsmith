@@ -63,6 +63,6 @@ def project_overrides(request):
     }
 
     return HttpResponse(
-        content="window.projectOverrides = " + json.dumps(override_data),
+        content=f"window.projectOverrides = {json.dumps(override_data)}",
         content_type="application/javascript",
     )

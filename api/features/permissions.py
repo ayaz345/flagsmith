@@ -132,8 +132,7 @@ class MasterAPIKeyFeatureStatePermissions(BasePermission):
     def has_object_permission(
         self, request: HttpRequest, view: str, obj: FeatureState
     ) -> bool:
-        master_api_key = getattr(request, "master_api_key", None)
-        if master_api_key:
+        if master_api_key := getattr(request, "master_api_key", None):
             return obj.environment.project.organisation == master_api_key.organisation
         return False
 
@@ -155,8 +154,7 @@ class MasterAPIKeyEnvironmentFeatureStatePermissions(BasePermission):
     def has_object_permission(
         self, request: HttpRequest, view: str, obj: FeatureState
     ) -> bool:
-        master_api_key = getattr(request, "master_api_key", None)
-        if master_api_key:
+        if master_api_key := getattr(request, "master_api_key", None):
             return obj.environment.project.organisation == master_api_key.organisation
         return False
 

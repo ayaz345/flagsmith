@@ -78,12 +78,10 @@ class MasterAPIKeyEnvironmentPermissions(BasePermission):
     def has_object_permission(
         self, request: HttpRequest, view: str, obj: Model
     ) -> bool:
-        master_api_key = getattr(request, "master_api_key", None)
-
-        if not master_api_key:
+        if master_api_key := getattr(request, "master_api_key", None):
+            return master_api_key.organisation_id == obj.project.organisation_id
+        else:
             return False
-
-        return master_api_key.organisation_id == obj.project.organisation_id
 
 
 class IdentityPermissions(BasePermission):
@@ -105,10 +103,7 @@ class IdentityPermissions(BasePermission):
         if request.user.is_organisation_admin(obj.environment.project.organisation):
             return True
 
-        if request.user.is_environment_admin(obj.environment):
-            return True
-
-        return False
+        return bool(request.user.is_environment_admin(obj.environment))
 
 
 class NestedEnvironmentPermissions(BasePermission):

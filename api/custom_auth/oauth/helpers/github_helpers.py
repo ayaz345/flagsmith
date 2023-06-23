@@ -7,12 +7,9 @@ logger = logging.getLogger(__name__)
 
 def convert_response_data_to_dictionary(text: str) -> dict:
     try:
-        response_data = {}
-        for key, value in [param.split("=") for param in text.split("&")]:
-            response_data[key] = value
-        return response_data
+        return dict([param.split("=") for param in text.split("&")])
     except ValueError:
-        logger.warning("Malformed data received from Github (%s)" % text)
+        logger.warning(f"Malformed data received from Github ({text})")
         raise GithubError("Malformed data received from Github")
 
 

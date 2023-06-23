@@ -6,6 +6,8 @@ from django.db import migrations, models
 import django.db.models.deletion
 
 
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -17,14 +19,36 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='FeatureSegment',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('priority', models.IntegerField(blank=True, null=True)),
-                ('feature', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='feature_segments', to='features.Feature')),
-                ('segment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='feature_segments', to='segments.Segment')),
+                (
+                    'feature',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='feature_segments',
+                        to='features.Feature',
+                    ),
+                ),
+                (
+                    'segment',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='feature_segments',
+                        to='segments.Segment',
+                    ),
+                ),
             ],
         ),
         migrations.AlterUniqueTogether(
             name='featuresegment',
-            unique_together=set([('feature', 'segment'), ('feature', 'priority')]),
+            unique_together={('feature', 'segment'), ('feature', 'priority')},
         ),
     ]

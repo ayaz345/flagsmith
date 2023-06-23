@@ -59,7 +59,7 @@ def test_datadog_when_generate_event_data_with_correct_values_then_success():
 
     assert event_data["text"] == expected_event_text
     assert len(event_data["tags"]) == 1
-    assert event_data["tags"][0] == "env:" + env
+    assert event_data["tags"][0] == f"env:{env}"
 
 
 def test_datadog_when_generate_event_data_with_with_missing_values_then_success():

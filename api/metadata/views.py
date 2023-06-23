@@ -62,9 +62,7 @@ class MetaDataModelFieldViewSet(viewsets.ModelViewSet):
         )
         serializer = MetadataModelFieldQuerySerializer(data=self.request.query_params)
         serializer.is_valid(raise_exception=True)
-        content_type = serializer.validated_data.get("content_type")
-
-        if content_type:
+        if content_type := serializer.validated_data.get("content_type"):
             queryset = queryset.filter(content_type__id=content_type)
 
         return queryset

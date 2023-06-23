@@ -96,7 +96,7 @@ def _call_webhook(
     json_data = json.dumps(data, sort_keys=True, cls=DjangoJSONEncoder)
     if webhook.secret:
         signature = sign_payload(json_data, key=webhook.secret)
-        headers.update({FLAGSMITH_SIGNATURE_HEADER: signature})
+        headers[FLAGSMITH_SIGNATURE_HEADER] = signature
 
     return requests.post(str(webhook.url), data=json_data, headers=headers)
 

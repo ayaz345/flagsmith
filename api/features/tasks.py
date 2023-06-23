@@ -35,8 +35,7 @@ def trigger_feature_state_change_webhooks(
         else _get_feature_state_webhook_data(instance)
     )
     data = {"new_state": new_state, "changed_by": changed_by, "timestamp": timestamp}
-    previous_state = _get_previous_state(history_instance, event_type)
-    if previous_state:
+    if previous_state := _get_previous_state(history_instance, event_type):
         data.update(previous_state=previous_state)
     Thread(
         target=call_environment_webhooks,

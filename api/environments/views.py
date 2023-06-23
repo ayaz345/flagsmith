@@ -114,15 +114,12 @@ class EnvironmentViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["GET"], url_path="trait-keys")
     def trait_keys(self, request, *args, **kwargs):
-        keys = [
-            trait_key
-            for trait_key in Trait.objects.filter(
-                identity__environment=self.get_object()
-            )
+        keys = list(
+            Trait.objects.filter(identity__environment=self.get_object())
             .order_by()
             .values_list("trait_key", flat=True)
             .distinct()
-        ]
+        )
 
         data = {"keys": keys}
 

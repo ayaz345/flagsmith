@@ -19,5 +19,4 @@ class MasterAPIKeyMiddleware:
                 key = MasterAPIKey.objects.get_from_key(key)
                 request.master_api_key = key
 
-        response = self.get_response(request)
-        return response
+        return self.get_response(request)

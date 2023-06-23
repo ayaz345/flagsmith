@@ -6,6 +6,8 @@ from django.db import migrations, models
 import django.db.models.deletion
 
 
+
+
 class Migration(migrations.Migration):
 
     initial = True
@@ -19,15 +21,35 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Feature',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True,
-                                        serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=2000)),
-                ('created_date', models.DateTimeField(auto_now_add=True,
-                                                      verbose_name='DateCreated')),
-                ('initial_value', models.CharField(default=None, max_length=2000, null=True)),
+                (
+                    'created_date',
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name='DateCreated'
+                    ),
+                ),
+                (
+                    'initial_value',
+                    models.CharField(default=None, max_length=2000, null=True),
+                ),
                 ('description', models.TextField(null=True)),
-                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
-                                              related_name='features', to='projects.Project')),
+                (
+                    'project',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='features',
+                        to='projects.Project',
+                    ),
+                ),
             ],
             options={
                 'ordering': ['id'],
@@ -36,21 +58,44 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='FeatureState',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False,
-                                        verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('enabled', models.BooleanField()),
                 ('value', models.CharField(max_length=2000, null=True)),
-                ('environment', models.ForeignKey(null=True,
-                                                  on_delete=django.db.models.deletion.CASCADE,
-                                                  related_name='feature_states',
-                                                  to='environments.Environment')),
-                ('feature', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
-                                              related_name='feature_states',
-                                              to='features.Feature')),
-                ('identity', models.ForeignKey(default=None, null=True,
-                                               on_delete=django.db.models.deletion.CASCADE,
-                                               related_name='identity_features',
-                                               to='environments.Identity')),
+                (
+                    'environment',
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='feature_states',
+                        to='environments.Environment',
+                    ),
+                ),
+                (
+                    'feature',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='feature_states',
+                        to='features.Feature',
+                    ),
+                ),
+                (
+                    'identity',
+                    models.ForeignKey(
+                        default=None,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='identity_features',
+                        to='environments.Identity',
+                    ),
+                ),
             ],
             options={
                 'ordering': ['id'],
@@ -58,6 +103,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name='featurestate',
-            unique_together=set([('feature', 'environment', 'identity')]),
+            unique_together={('feature', 'environment', 'identity')},
         ),
     ]

@@ -29,10 +29,10 @@ class MixpanelWrapper(AbstractBaseIdentityIntegrationWrapper):
     def _identify_user(self, user_data: dict) -> None:
         response = requests.post(self.url, headers=self.headers, json=user_data)
         logger.debug(
-            "Sent event to Mixpanel. Response code was: %s" % response.status_code
+            f"Sent event to Mixpanel. Response code was: {response.status_code}"
         )
         logger.debug(
-            "Sent event to Mixpanel. Response content was: %s" % response.content
+            f"Sent event to Mixpanel. Response content was: {response.content}"
         )
 
     def generate_user_data(

@@ -10,22 +10,28 @@ from projects.permissions import PROJECT_PERMISSIONS
 def insert_default_project_permissions(apps, schema_model):
     PermissionModel = apps.get_model('permissions', 'PermissionModel')
 
-    project_permissions = []
-    for permission in PROJECT_PERMISSIONS:
-        project_permissions.append(
-            PermissionModel(key=permission[0], description=permission[1], type=PROJECT_PERMISSION_TYPE))
-
+    project_permissions = [
+        PermissionModel(
+            key=permission[0],
+            description=permission[1],
+            type=PROJECT_PERMISSION_TYPE,
+        )
+        for permission in PROJECT_PERMISSIONS
+    ]
     PermissionModel.objects.bulk_create(project_permissions)
 
 
 def insert_default_environment_permissions(apps, schema_model):
     PermissionModel = apps.get_model('permissions', 'PermissionModel')
 
-    environment_permissions = []
-    for permission in ENVIRONMENT_PERMISSIONS:
-        environment_permissions.append(
-            PermissionModel(key=permission[0], description=permission[1], type=ENVIRONMENT_PERMISSION_TYPE))
-
+    environment_permissions = [
+        PermissionModel(
+            key=permission[0],
+            description=permission[1],
+            type=ENVIRONMENT_PERMISSION_TYPE,
+        )
+        for permission in ENVIRONMENT_PERMISSIONS
+    ]
     PermissionModel.objects.bulk_create(environment_permissions)
 
 

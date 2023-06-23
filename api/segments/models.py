@@ -73,7 +73,7 @@ class Segment(
         ordering = ("id",)  # explicit ordering to prevent pagination warnings
 
     def __str__(self):
-        return "Segment - %s" % self.name
+        return f"Segment - {self.name}"
 
     @staticmethod
     def id_exists_in_rules_data(rules_data: typing.List[dict]) -> bool:
@@ -150,10 +150,7 @@ class SegmentRule(AbstractBaseExportableModel):
             )
 
     def __str__(self):
-        return "%s rule for %s" % (
-            self.type,
-            str(self.segment) if self.segment else str(self.rule),
-        )
+        return f"{self.type} rule for {str(self.segment) if self.segment else str(self.rule)}"
 
     def does_identity_match(
         self, identity: "Identity", traits: typing.List["Trait"] = None
@@ -234,12 +231,7 @@ class Condition(
     )
 
     def __str__(self):
-        return "Condition for %s: %s %s %s" % (
-            str(self.rule),
-            self.property,
-            self.operator,
-            self.value,
-        )
+        return f"Condition for {str(self.rule)}: {self.property} {self.operator} {self.value}"
 
     def does_identity_match(  # noqa: C901
         self, identity: "Identity", traits: typing.List["Trait"] = None
